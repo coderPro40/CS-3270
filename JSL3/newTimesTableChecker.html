@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--  ThankGod
+     11/7/2016 -->
+     
+<html lang="en">
+
+<!--Head of code-->      
+<head>
+	<title> Assignment 4 </title>
+	<meta charset = "utf-8">
+</head>
+
+<!--Body of code-->
+<body>
+
+<script type = "text/javascript">
+	// function for time table input with parameters time table value, start value and end value
+	function TTF(intTimeTable, intStart, intEnd){
+		// if entries is valid
+		if (intTimeTable > 0 && intStart < intEnd){
+			
+			// for loop to get all values from start to end of time table value 
+			for (var intI = intStart; intI <= intEnd; intI++){
+			
+				// get value for iterator pointer and use to print out value
+				var intOutput = (intTimeTable * intI);
+				document.write(intTimeTable + " * " + intI + " = " + intOutput + "<br/>");
+			}
+		}
+		else{
+			// otherwise run this block and print out value
+			document.write("You either put in a time table value of 0, or start value greater than the end value <br/>");
+		}
+	}
+	
+	// bool control to control while loop
+	var running = true;
+	
+	while(running){
+		// prompt user to enter times table value or exit with -1 value
+		var intTT 	= Math.floor(prompt("please enter time table value, or enter -1 to exit: "));
+		
+		// if not exit call
+		if(intTT != -1){
+			// enter values only if exit call isn't done
+			var intS 	= Math.floor(prompt("please enter start index of table: "));
+			var intE 	= Math.floor(prompt("please enter end index of table: "));
+			
+			// run time table function
+			TTF(Math.abs(intTT), Math.abs(intS), Math.abs(intE));
+			
+			// create space between entries
+			document.write("<br/>");
+		}
+		else{
+			// break out of while loop
+			running = false;
+		}
+	}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+Learn keyboard shortcuts for IDE and OS in general
+Hidden field hidRong calls function that generates name of appropriate image.
+
+Use Php to create form with groups of input of type buttons each with unique name from php
+Transmit hidden word from JS chance via URL to decide whether guess was right and to change image
+Use List to store chosen values to prevent reuse of same button values

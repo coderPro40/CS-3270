@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-  ThankGod
+     10/23/2016 ->
+     
+<html lang="en">
+
+<!--Head of code-->      
+<head>
+	<title> Template </title>
+	<script type = "text/javascript">
+		function changeContent(){
+			var value = parseInt(document.getElementById('PullDown').value);
+			history.go(value);
+		}
+	
+	</script>
+</head>
+
+<!--Body of code-->
+<body>
+	<select id="PullDown" onchange="changeContent();" 
+	style="width:100;">
+	<script>
+		for(var i = 0; i < history.length ; i++){
+			document.writeln("<option value=" + i + ">" + i +
+			"</option>");
+		}
+	</script>
+	</select>
+</body>
+</html>

@@ -1,0 +1,124 @@
+/*	ThankGod
+	9/27/2016*/
+
+body{color: #000000;						/*color of section*/
+	background-color: #00FFFF;				/*background color*/
+	font-family: "Times New Roman", serif;	/*font type*/
+}
+
+.container{
+	width: 100%;				
+	margin: 0 auto 0 auto;					/*center content with the container*/
+	position: relative;
+	overflow: hidden;
+}
+
+/*change color of selected text*/
+
+.colorTransform{
+	animation-name: transformColor;			
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+}
+
+.slider{
+	animation-name: textslide;
+	animation-duration: 3s;
+	animation-iteration-count: 2;
+}
+
+.question{
+	width: 7.5em;
+	height: 7.5em;
+
+	animation-name: slidein;
+	animation-duration: 3s;
+	animation-iteration-count: initial;
+	animation-timing-function: ease-in-out;
+}
+
+.bounce{
+	width: 30em;
+	height: 30em;
+	display: block;
+	margin: 0 auto;
+
+	animation-name: rotate;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+header{
+	font-weight: bold;						/*center content in header element*/
+	text-align: center;
+}
+
+main{
+	font-size: 1.5em;						/*center content in main element*/
+	text-align: left;
+}
+
+header h1{
+	animation-name: expandRetract;
+	animation-duration: 7s;
+	animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes expandRetract{
+	from{
+		-webkit-transform: scale(.5);
+	}
+	to{
+		-webkit-transform: scale(1.5);
+	}
+}
+
+@-webkit-keyframes slidein{
+	from{
+		-webkit-transform: translateX(1000px);
+	}
+	to{
+		-webkit-transform: translateX(10px);
+	}
+}
+
+@keyframes transformColor{
+	0%{
+		color: #FF0000; 
+	}
+	50% { 
+		color: #61BE50; 
+	}
+	100%{
+		color: #800080;
+	}
+}
+
+
+@keyframes rotate{
+	0%{
+		transform: rotateX(0deg);
+		background-color: #FF0000; 
+	}
+	50% { 
+		transform: rotateY(180deg);
+		background-color: #61BE50; 
+	}
+	100%{
+		transform: rotateX(360deg);
+		background-color: #800080;
+	}
+}
+
+@-webkit-keyframes textslide{
+	from {
+    -webkit-margin-left: 100%;
+    -webkit-width:300%;
+  }
+  
+  	to {
+    -webkit-margin-left:0%;
+    -webkit-width:100%;
+  }
+}

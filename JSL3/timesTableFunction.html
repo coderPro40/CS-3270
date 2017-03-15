@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--  ThankGod
+     11/7/2016 -->
+     
+<html lang="en">
+
+<!--Head of code-->      
+<head>
+	<title> Assignment 3 </title>
+	<meta charset = "utf-8">
+</head>
+
+<!--Body of code-->
+<body>
+
+<script type = "text/javascript">
+	// function for time table input
+	function TTF(intTimeTable, intStart, intEnd){
+		if (intTimeTable > 0 && intStart < intEnd){
+			for (var intI = intStart; intI <= intEnd; intI++){
+				var intOutput = (intTimeTable * intI);
+				document.write(intTimeTable + " * " + intI + " = " + intOutput + "<br/>");
+			}
+		}
+		else{
+			document.write("You either put in a time table value of 0, or start value greater than the end value");
+		}
+	}
+	
+	var intTT 	= Math.floor(Math.abs(prompt("please enter time table value: ")));
+	var intS 	= Math.floor(Math.abs(prompt("please enter start index of table: ")));
+	var intE 	= Math.floor(Math.abs(prompt("please enter end index of table: ")));
+	TTF(intTT, intS, intE);
+	
+</script>
+
+</body>
+</html>

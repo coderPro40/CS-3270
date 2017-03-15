@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-  ThankGod
+     10/23/2016 ->
+     
+<html lang="en">
+
+<!--Head of code-->      
+<head>
+	<title> Age </title>
+</head>
+
+<!--Body of code-->
+<body>
+
+<script type = "text/javascript">
+	var myAge = prompt("Enter your Age:", 30);
+	
+	if (myAge >=10 && myAge <= 20){
+		document.write("My Age is between 10 and 20.<br/>");
+	}
+	if (!(myAge >= 10 && myAge <= 20)){
+		document.write("My Age is NOT between 10 and 20.<br/>");
+	}
+	if (myAge > 80 || myAge < 30){
+		document.write("My Age is above 80 OR under 30.<br/>");
+	}
+	else if (myAge == 30){
+		document.write("Pizza!<br />");
+	}
+	else if (myAge == 80){
+		document.write("Soup!<br />");
+	}
+	else{
+		document.write("My Age is NOT above 80 OR under 30.<br/>");
+	}
+	
+	var myName = "Paul";
+</script>
+
+</body>
+</html>
