@@ -1,0 +1,42 @@
+* http://php.net/manual/en/language.references.pass.php
+* http://us3.php.net/manual/en/book.ds.php
+* http://php.net/manual/en/function.mt-rand.php             : for random numbers
+* http://us3.php.net/manual/en/language.oop5.constants.php  : for class constants
+* http://us3.php.net/manual/en/language.oop5.decon.php      : for class constructors and destructors
+* const * built-in functions
+Board into object with section behaviours as follows:
+    & page object is always initially (--init) on blank yellow page
+        # this consists of start function with opening html tags & end function with closing html tags
+    & provide options for new game, load game, or rules
+        # for new game go to game setup screen
+        # for load game go to database and load the game. Then show gamelog, save game, and rules screen
+        # multiple pages necessary, use session variable to transport objects
+    & board attribute is initially set to 0. Based on # of players push boards to array.
+        
+values to be displayed, use array passage to class
+    // with programming, break down item into multiple similar groups and use array to make tracking and implementatoin
+    // much easier
+
+
+
+
+
+
+
+/***********************************************************************************************************************************************
+* Method: __constructor
+* Process: class constructor or init class for initialization of game board object
+* Parameter: None for now, but pass by reference player objects to play game (in future)
+*************************************************************************************************************************************************/
+
+/***********************************************************************************************************************************************
+* Method: start
+* Process: display opening braces of images for blank yellow page
+* Parameter: None
+************************************************************************************************************************************************/
+
+/***********************************************************************************************************************************************
+* Method: stop
+* Process: display closing braces of images for blank yellow page
+* Parameter: None
+************************************************************************************************************************************************/
