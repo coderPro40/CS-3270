@@ -1,8 +1,9 @@
 * http://php.net/manual/en/language.references.pass.php
 * http://us3.php.net/manual/en/book.ds.php
-* http://php.net/manual/en/function.mt-rand.php             : for random numbers
-* http://us3.php.net/manual/en/language.oop5.constants.php  : for class constants
-* http://us3.php.net/manual/en/language.oop5.decon.php      : for class constructors and destructors
+* http://php.net/manual/en/function.mt-rand.php                         : for random numbers
+* http://us3.php.net/manual/en/language.oop5.constants.php              : for class constants
+* http://us3.php.net/manual/en/language.oop5.decon.php                  : for class constructors and destructors
+* http://culttt.com/2013/02/04/how-to-save-php-sessions-to-a-database/  : for storing sessions in a database
 * const * built-in functions
 Board into object with section behaviours as follows:
     & page object is always initially (--init) on blank yellow page
@@ -12,11 +13,34 @@ Board into object with section behaviours as follows:
         # for load game go to database and load the game. Then show gamelog, save game, and rules screen
         # multiple pages necessary, use session variable to transport objects
     & board attribute is initially set to 0. Based on # of players push boards to array.
-        
-values to be displayed, use array passage to class
+        # corals polyp tiles can be played by any player but don't belong to any. Can be added to
+        and used to devour other corals during player's turn
+    & predetermined location of polyp tiles
+        # place 5 tiles of each color on each board to start game. Grey, Orange, Pink, Yellow, White. 
+        These tiles have no significance to the flow of the game
+
+Coral object with behaviours as follows:
+    & able to keep track of # of polyp in coral about to join
+        # if coral is same color (to join) or different color (not join)
+        # if polyp of different color has attribute, nextToShrimp set as true, then fail to set
+        # array to store memory location of each object in coral within each polyp object so
+        as to update # of polyp tiles in coral from adjacent coral
+    & able to keep track of current dominance with tiles and colors
+    & able to keep track of current player object using it
+        # knows if it has shrimp on it so shirmpProtect = true
+    & able to decide whether able to devour polyp underneath or not
+        # if dominanceTileColor is equal to the color of attacked coral, then set.
+        # if sizeOfCoral_ is greater than this->sizeOfCoral_ then fail to set. Else, set.
+    & able to know if adjacent space is extra growth
+    values to be displayed, use array passage to class
+
+Shrimp object with behaviour as follows:
+    & knows where it can and can't be placed
+    & knows where it can and can't move to
+    & knows which corals it currently protects
     // with programming, break down item into multiple similar groups and use array to make tracking and implementatoin
     // much easier
-
+    // any problems come from class within a class during transfer from files
 
 
 
@@ -40,3 +64,4 @@ values to be displayed, use array passage to class
 * Process: display closing braces of images for blank yellow page
 * Parameter: None
 ************************************************************************************************************************************************/
+
