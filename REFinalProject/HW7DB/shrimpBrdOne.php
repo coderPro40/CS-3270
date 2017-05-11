@@ -5,9 +5,6 @@
      * and open the template in the editor.
      */
     define("kEOL", chr(13).chr(10));
-    $rf0 = array(0=>'x','x','x','','','','x','x','','','y','','','x','','','x','','w','','','','g','','_','','x','','','','p','x','o','','','','','','','','','');
-    $rf3 = array(0=>'x','','','','','','x','','','','o','x','','','','','x','','g','','','','w','','_','','','','x','','p','','y','','x','x','','','x','','','x');
-    
     function showShrimp1($choice)               // to choose if using during action or hw6
     {
 		$mv = filter_input(INPUT_GET, 'mv');
@@ -24,14 +21,14 @@
                 createLG($redo);                    // write string to gamelog
             }
             else{
-                $sb0 = array(0=>'x','x','x','','','','x','x','','','','','','x','','','x','','','','','','','','','','x','','','','','','','','','','','','','','','');
+                $sb0 = $_SESSION['bFirst'];
             }
         }
         elseif(isset($_SESSION["sb0"])){
             $sb0 = $_SESSION["sb0"];
         }
         else{
-            $sb0 = array(0=>'x','x','x','','','','x','x','','','','','','x','','','x','','','','','','','','','','x','','','','','','','','','','','','','','','');
+            $sb0 = $_SESSION['bFirst'];
             include_once 'gameLog.php';         // include gamelog file
             createLG();                         // write string for start game to game log
         }

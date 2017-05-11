@@ -1,5 +1,21 @@
 <?php
 session_start();
+if($_SESSION['startG'] === 1){
+		$rf0 = $_SESSION['first'];		// set session variables of array boards
+		$rf3 = $_SESSION['second'];
+		$brdF = $_SESSION['bFirst'];
+		$brdS = $_SESSION['bSecond'];
+		$oneD = $_SESSION['divOne'];
+		$twoD = $_SESSION['divTwo'];
+		session_unset();				// clear all prior session variables
+		$_SESSION['first'] = $rf0;
+		$_SESSION['second'] = $rf3;
+		$_SESSION['bFirst'] = $brdF;
+		$_SESSION['bSecond'] = $brdS;
+		$_SESSION['divOne'] = $oneD;
+		$_SESSION['divTwo'] = $twoD;
+		$_SESSION['startG'] = 0;
+	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML LANG="en">
@@ -102,8 +118,8 @@ session_start();
 																	</TR>
 																</TABLE>
 															</TD>
-															<TD CLASS=thin>&nbsp;</TD>
-															<TD CLASS=thin>&mdash;</TD>
+															<td CLASS=thin></td>
+															<TD CLASS=thin><?php include_once "playerInfo.php"; player1SE();?></TD>
 															<TD CLASS=thin>
 																<TABLE CELLSPACING=0 CELLPADDING=0>
 																	<TR>
@@ -264,7 +280,11 @@ session_start();
 																	<TR>
 																		<?php
 																			$a2 = filter_input(INPUT_GET, 'w');
+																			$exchange = filter_input(INPUT_GET, 'exchange');
+																			$action10 = filter_input(INPUT_GET, 'action10');
 																			if($a2 != 1){
+																				if ($exchange != 1){
+																				if ($action10 != 'a10'){
 																				include_once "action4Disable.php";
 																				action1ED();						// enable/ disable action4
 																		?>
@@ -318,14 +338,32 @@ session_start();
 																				}
 																				else
 																					action4ED();						// enable/ disable action4
+																				
 																				include_once "action4Disable.php";
-																				action8ED();						// enable/ disable action4
+																				$larva = $_SESSION['larvaCubes'];
+																				if ($larva[0][1] >0 or $larva[1][1] >0 or $larva[2][1] >0 or $larva[3][1] >0 or $larva[4][1] >0)
+																				{
+																					action8ED();						// enable/ disable action4
+																				}
+																				else
+																				{
+																					$_SESSION['eight'] = 1;
+																					$eight = $_SESSION['eight'];
+																					action8ED($eight);
+																					$_SESSION['eight'] = $eight;
+																				}
 																		?>
 																	</TR>
 																	<TR>
 																		<?php
 																				include_once "action4Disable.php";
-																				if (isset($_SESSION['five']))
+																				$disablefive = filter_input(INPUT_GET, 'five');
+																				if ($disablefive != '')
+																				{
+																					action5ED();
+																					$_SESSION['five'] = $disablefive;
+																				}
+																				elseif (isset($_SESSION['five']))
 																				{
 																					$five = $_SESSION['five'];
 																					action5ED($five);						// enable/ disable action4
@@ -347,6 +385,17 @@ session_start();
 																		<?php
 																				include_once "action4Disable.php";
 																				action10ED();						// enable/ disable action4
+																				}
+																				else{
+																					include_once "action10.php";
+																					action10();
+																				}
+																				}
+																				else
+																				{
+																					include_once "action8.php";
+																					displayLarva();
+																				}
 																			}
 																			else{
 																				include_once "action2.php";
@@ -403,141 +452,9 @@ session_start();
 <!-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------														
                                                                                                                                                                                 These are the numbered squares that show which coral has control over others
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct00.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>1</B>
-																					</TD>
-																					<TD>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct10.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>2</B>
-																					</TD>
-																					<TD>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct20.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>3</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct30.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>4</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct40.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>5</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p2.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct50.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>6</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct60.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>7</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p3.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct70.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>8</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct80.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p0.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>9</B>
-																					</TD>
-																					<TD>
-																						&nbsp;<BR>
-																						<TABLE CELLPADDING=0 CELLSPACING=0 STYLE="border: solid 1px black;">
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p4.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																							<TR>
-																								<TD><IMG SRC="game/reef/images/ct90.gif" WIDTH=32 HEIGHT=32></TD>
-																								<TD><IMG SRC="game/reef/images/p1.jpg" WIDTH=32 HEIGHT=32></TD>
-																							</TR>
-																						</TABLE>
-																						<B>10</B>
+																						<?php include_once "dominance.php";
+																						dominanceTiles();
+																						?>
 																					</TD>
 																				</TR>
 																			</TABLE>
@@ -548,71 +465,10 @@ session_start();
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->																			<TABLE CELLPADDING=2 CELLSPACING=2 BORDER=0>
 																			<TABLE CELLPADDING=2 CELLSPACING=2 BORDER=0>
 																				<TR ALIGN=CENTER VALIGN=TOP>
-																					<TD WIDTH=115 BGCOLOR=#6DC0B4 STYLE="border: solid 1px black;">
-																						<TABLE CELLSPACING=2 CELLPADDING=0>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG BORDER=1 SRC=game/reef/images/l0.gif ALT=[w] WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE><BR>+6 in supply</TD>
-																							</TR>
-																							<TR>
-																								<TD></TD>
-																							</TR>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p4.jpg" HEIGHT=32 WIDTH=32 ALT="g"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p4.jpg" HEIGHT=32 WIDTH=32 ALT="g"></TD>
-																							</TR>
-																						</TABLE>
-																					</TD>
-																					<TD WIDTH=115 BGCOLOR=#6DC0B4 STYLE="border: solid 1px black;">
-																						<TABLE CELLSPACING=2 CELLPADDING=0>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG BORDER=1 SRC=game/reef/images/l1.gif ALT=[y] WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE><BR>+9 in supply</TD>
-																							</TR>
-																							<TR>
-																								<TD></TD>
-																							</TR>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p1.jpg" HEIGHT=32 WIDTH=32 ALT="y"></TD>
-																							</TR>
-																						</TABLE>
-																					</TD>
-																					<TD WIDTH=115 BGCOLOR=#6DC0B4 STYLE="border: solid 1px black;">
-																						<TABLE CELLSPACING=2 CELLPADDING=0>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG BORDER=1 SRC=game/reef/images/l2.gif ALT=[o] WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE><BR>+8 in supply</TD>
-																							</TR>
-																							<TR>
-																								<TD></TD>
-																							</TR>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p0.jpg" HEIGHT=32 WIDTH=32 ALT="w"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p2.jpg" HEIGHT=32 WIDTH=32 ALT="o"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p0.jpg" HEIGHT=32 WIDTH=32 ALT="w"></TD>
-																							</TR>
-																						</TABLE>
-																					</TD>
-																					<TD WIDTH=115 BGCOLOR=#6DC0B4 STYLE="border: solid 1px black;">
-																						<TABLE CELLSPACING=2 CELLPADDING=0>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG BORDER=1 SRC=game/reef/images/l3.gif ALT=[p] WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE><BR>+9 in supply</TD>
-																							</TR>
-																							<TR>
-																								<TD></TD>
-																							</TR>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p0.jpg" HEIGHT=32 WIDTH=32 ALT="w"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p2.jpg" HEIGHT=32 WIDTH=32 ALT="o"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p3.jpg" HEIGHT=32 WIDTH=32 ALT="p"></TD>
-																							</TR>
-																						</TABLE>
-																					</TD>
-																					<TD WIDTH=115 BGCOLOR=#6DC0B4 STYLE="border: solid 1px black;">
-																						<TABLE CELLSPACING=2 CELLPADDING=0>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG BORDER=1 SRC=game/reef/images/l4.gif ALT=[g] WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE><BR>+9 in supply</TD>
-																							</TR>
-																							<TR>
-																								<TD></TD>
-																							</TR>
-																							<TR ALIGN=CENTER>
-																								<TD><IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p4.jpg" HEIGHT=32 WIDTH=32 ALT="g"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p4.jpg" HEIGHT=32 WIDTH=32 ALT="g"> <IMG STYLE="border: solid 1px #4F4F4F;" SRC="game/reef/images/p4.jpg" HEIGHT=32 WIDTH=32 ALT="g"></TD>
-																							</TR>
-																						</TABLE>
-																					</TD>
+																					<?php
+																					include_once "openSea.php";
+																					openSeaBoard();
+																					?>
 																					<TD></TD>
 																					<TD WIDTH=110 VALIGN=TOP STYLE="border: solid 1px black; font-size: 11px; font-weight: bold; padding-top: 6px;">Alga Cylinder Space<BR><BR><BR>none</TD>
 																				</TR>
@@ -626,18 +482,14 @@ session_start();
 <!-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------														
                                                                                                                                                                                 This gives you the row and column heading for the left gameboard and also the first 
 																						corals that start on the board as well as the gameboard its self
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->																						<DIV STYLE="left:0px; top:0px; width:340; height:291; position:relative; border: solid 1px black;"><SPAN ID="map" STYLE="left:0; top:0; position:absolute; z-index:100;"><IMG SRC="game/reef/images/b0.jpg" ></SPAN>
-																						<DIV STYLE="left:0px; top:0px; width:340; height:291; position:relative; border: solid 1px black;"><SPAN ID="map" STYLE="left:0; top:0; position:absolute; z-index:100;"><IMG SRC="game/reef/images/b0.jpg" ></SPAN>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->																						
 																							<?php
+                                                                                                                                                                                        echo $_SESSION['divOne'];
+																																														echo $_SESSION['divOne'];
 																																														if (isset($_SESSION['rf0']))
 																																															$rf0 = $_SESSION['rf0'];
-																																														else
-																																															$rf0 = array(0=>'x','x','x','','','','x','x','','','y','','','x','','','x','','w','','','','g','','_','','x','','','','p','x','o','','','','','','','','','');
-																																														
 																																														if (isset($_SESSION['rf3']))
 																																															$rf3 = $_SESSION['rf3'];
-																																														else
-																																															$rf3 = array(0=>'x','','','','','','x','','','','o','x','','','','','x','','g','','','','w','','_','','','','x','','p','','y','','x','x','','','x','','','x');
                                                                                                                                                                                         // get URL r = 0 to show player clicked action 4
                                                                                                                                                                                         $r = (isset($_GET['r'])) ? filter_input(INPUT_GET, 'r'): 1;
                                                                                                                                                                                         $prompt = ($r == 0)? true: false;   // check to see if current pass is action 4 or not
@@ -646,7 +498,7 @@ session_start();
                                                                                                                                                                                         include_once 'shrimpBrdOne.php';    // include file with shrimp1 php implementation        
                                                                                                                                                                                         include_once 'placeTiles.php';
                                                                                                                                                                                         showBoard($rf0);
-                                                                                                                                                                                        showTiles1();
+																																														showTiles1();
                                                                                                                                                                                         ?>
 																							<SPAN STYLE="left:44; top:4; width:0px; height: 0px; position:absolute; z-index:200; font-weight: bold; font-size: 12px;">A</SPAN>
 																							<SPAN STYLE="left:84; top:4; width:0px; height: 0px; position:absolute; z-index:200; font-weight: bold; font-size: 12px;">B</SPAN>
@@ -685,6 +537,19 @@ session_start();
 																																																include_once 'action5.php';
 																																																placeTargetM0();
 																																															}
+																																															$es = filter_input(INPUT_GET, 'es');
+																																															if ($es != '')
+																																															{
+																																																include_once 'action1.php';
+																																																pickShrimp();
+																																																showEatShrimp();
+																																															}
+																																															$pick = filter_input(INPUT_GET, 'pick');
+																																															if ($pick !='')
+																																															{
+																																																include_once 'action1.php';
+																																																eatShrimpAndCoral($pick);
+																																															}
 																																															showShrimp1($prompt);
                                                                                                                                                                                         ?>
                                                                                                                                                                                 </DIV>
@@ -695,8 +560,8 @@ session_start();
                                                                                                                                                                         corals that start on the board as well as the gameboard its self
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 																					<TD>
-																						<DIV STYLE="left:0px; top:0px; width:340; height:291; position:relative; border: solid 1px black;"><SPAN ID="map" STYLE="left:0; top:0; position:absolute; z-index:100;"><IMG SRC="game/reef/images/b3.jpg" ></SPAN>
                                                                                                                                                                                         <?php
+                                                                                                                                                                        echo $_SESSION['divTwo'];
                                                                                                                                                                                         include_once 'shrimpBrdTwo.php'; // include file with php declarations
                                                                                                                                                                                         showBoard($rf3);
                                                                                                                                                                                         showTiles2();
@@ -726,12 +591,25 @@ session_start();
 																																																include_once 'action5.php'; // include file with php declarations
 																																																showMoveShrimp2();
 																																															}
+																																															
 																																															if ($mv != '' and $r == '')
 																																															{
 																																																include_once 'action5.php';
 																																																placeTargetM1();
 																																															}
+																																															if ($es != '')
+																																															{
+																																																include_once 'action1.php';
+																																																showEatShrimp1();
+																																															}
+																																															$pick1 = filter_input(INPUT_GET, 'pick1');
+																																															if ($pick1 !='')
+																																															{
+																																																include_once 'action1.php';
+																																																eatShrimpAndCoral1($pick1);
+																																															}
 																																															showShrimp2($prompt);
+																																															echo '</DIV>';
                                                                                                                                                                                         ?>
                                                                                                                                                                                 </DIV>
 																					</TD>
@@ -756,6 +634,17 @@ session_start();
 			</TD>
 		</TR>
 	</TABLE>
+	<h2 align=center>
+		<?php
+		if ($mv != '' and $r == '')
+		{
+			include_once 'action5.php';
+			removeShrimp();
+		}
+		if ($pick!='' or $pick1!='')
+			echo "<a href='hw7db.php'><h1>FINISH ACTION 1</h1></a>";
+		?>
+	</h2>
 	</DIV>
 	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

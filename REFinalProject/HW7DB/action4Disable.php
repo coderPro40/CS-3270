@@ -5,7 +5,7 @@
 		if ($one == 1)
 			echo "<TD><IMG SRC=game/reef/images/a1d.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT> <B>Action 1</B>:</B> Eat one coral and a shrimp with your parrotfish<BR>(once at start of turn only)</TD>";
 		else
-			echo "<TD WIDTH=50%><A HREF='hw7db.php'><IMG SRC=game/reef/images/a1d.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT> <B>Action 1</B>:</A>Eat one coral and a shrimp with your parrotfish<BR>(once at start of turn only)</TD>";
+			echo "<TD WIDTH=50%><A HREF='hw7db.php?action=eatShrimpandCoral&es=1'><IMG SRC=game/reef/images/a1d.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT> <B>Action 1</B>:</A>Eat one coral and a shrimp with your parrotfish<BR>(once at start of turn only)</TD>";
 	}
 	// This enables or disables action 2
 	
@@ -61,7 +61,7 @@
 		if ($eight == 1)
 			echo "<TD WIDTH=50%><IMG SRC=game/reef/images/a8.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 8:</B></A></B> Exchange a larva cube for a polyp tile of the same colour</TD>";
 		else
-			echo "<TD WIDTH=50%><A HREF='hw7db.php'><IMG SRC=game/reef/images/a8.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 8:</B></A>Exchange a larva cube for a polyp tile of the same colour</TD>";
+			echo "<TD WIDTH=50%><A HREF='hw7db.php?action=exchange&exchange=1'><IMG SRC=game/reef/images/a8.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 8:</B></A>Exchange a larva cube for a polyp tile of the same colour</TD>";
 	}
 	// This enables or disables action 9
 	
@@ -77,6 +77,6 @@
 		if ($ten == 1)
 			echo "<TD WIDTH=50%><IMG SRC=game/reef/images/a10.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 10:</B></A></B> Collect a larva cube and polyp tiles from the open sea<BR>(must do once, at end of turn only)</TD>";
 		else
-			echo "<TD WIDTH=50%><A HREF='hw7db.php'><IMG SRC=game/reef/images/a10.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 10:</B></A>Collect a larva cube and polyp tiles from the open sea<BR>(must do once, at end of turn only)</TD>";
+			echo "<TD WIDTH=50%><A HREF='hw7db.php?action10&action10=a10'><IMG SRC=game/reef/images/a10.jpg WIDTH=50 HEIGHT=32 ALIGN=LEFT BORDER=0> <B>Action 10:</B></A>Collect a larva cube and polyp tiles from the open sea<BR>(must do once, at end of turn only)</TD>";
 	}
 ?>

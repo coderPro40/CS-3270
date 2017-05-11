@@ -1,30 +1,44 @@
 <?php
 define("kEOL", chr(13).chr(10));
-require_once 'polyp.php'; require_once 'shrimp.php';
+require_once 'polyp.php'; require_once 'shrimp.php'; require_once 'dominance.php'; require_once 'openSea.php'; require_once 'player.php';
+require_once 'action.php';
 class page {
     // attributes of object
-    private $boardNo = array();         // boards selected for game
     private $posCounter = 0;            // position of images for predetermined placement
+    public $boardNo = array();          // boards selected for game
     public $noPlayers = 0;              // # of players for game
     public $displayAry = array();       // array containing divs for board
+    public $gTurn = -1;                 // count of turns in the start of the game
+    public $gRound = 0;                 // count of current round in game
     public $disBrdAry = array();
-    protected $masterObjAry = array();  // list of all objects in game based on ID
-    protected $styleAry = array(        // list of spans for images r & c, and these bits are used to form complete spans
+    protected $masterObjAry = array(    // keep track of all objects by name currently in game
+            'polyp' => array(),
+            'shrimp' => array(),
+            'dominance' => array(),
+            'openSea' => array(),
+            'player' => array(),
+            'action' => array()
+        );
+    protected $styleAry = array(        // possible spans for images r & c, and bits which are used to form complete spans
             '<SPAN STYLE="left:', '; top:', '; width:', 'px; height:',
             'px; position:absolute; z-index:', '; font-weight: bold; font-size: 12px;',
             'text-align: center;', '">', '</SPAN>', '<A href="', '</A>'
         );
     protected $links = array(           // list of possible pages to link to 
-            'main.php?'
+            'main.php?', 'game.php?'
         );
-    protected $choiceObj = array();     // possible objects to create
+    protected $choiceObj = array();     // possible objects to instantiate
     
     // behaivors of object: use serialize for setting objects to this object and unserialize for getting objects from string state
     public function __construct($noOfBrds=0) {
         // initially with the constructor, there're no boards created.
-        $this->noPlayers = $noOfBrds;                   // decide the # of players in the game
-        $this->choiceObj[] = serialize(new polyp());    // for polyp objects 
-        $this->choiceObj[] = serialize(new shrimp());   // for shirimp objects
+        $this->noPlayers = $noOfBrds;                       // decide the # of players in the game
+        $this->choiceObj[] = serialize(new polyp());        // for polyp objects 
+        $this->choiceObj[] = serialize(new shrimp());       // for shirimp objects
+        $this->choiceObj[] = serialize(new dominance());    // for dominance objects
+        $this->choiceObj[] = serialize(new openSea());      // for openSea objects
+        $this->choiceObj[] = serialize(new player());       // for player objects
+        $this->choiceObj[] = serialize(new action());       // for player objects
    }
    
    public function getPosCounter(){
@@ -67,6 +81,15 @@ class page {
                         			echo '<TD COLSPAN=3>';
                         				echo '<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0>';
    }
+   
+   public function prePlayer(){    	// start game braces
+        echo '<TR VALIGN=TOP>';
+   }
+   
+   public function postPlayer(){   	// closing braces for start game
+        // cross functional with start()
+        echo '</TR>';
+    }
    
    public function gameBrdNDTilesBeg(){
                                        		echo '<TR VALIGN=TOP>';
@@ -143,20 +166,22 @@ class page {
                        $options = array(
                             '<TD ALIGN=right><A CLASS=menu HREF="newGame.php">New Game</A>',
                             '<TD ALIGN=right><A CLASS=menu HREF="gameLog.php">Display_Log file</A>',
-                            '<TD ALIGN=right><A CLASS=menu HREF="loadGame.php">Load Game</A>',
-                            '<TD ALIGN=right><A CLASS=menu HREF="saveGame.php">Save_Game State</A>',
+                            '<TD ALIGN=right><A CLASS=menu HREF="load.php">Load Game</A>',
+                            '<TD ALIGN=right><A CLASS=menu HREF="save.php">Save_Game State</A>',
                             '<TD ALIGN=right><A CLASS=menu HREF="start.php">start page</A>',
-                            '<TD ALIGN=right><A CLASS=menu HREF="rules.html">Rules</A>');
+                            '<TD ALIGN=right><A CLASS=menu HREF="rules.html">Rules</A>',
+                            '<TD ALIGN=right><A CLASS=menu HREF="HW7DB/hw7db.php">Actions_Game</A>');
                             
                       foreach($optAry as $choice){
-                          echo $options[$choice];   // display menu chosen by users
-                      }
+                        echo $options[$choice];   // display menu chosen by users
+                    }
+                      
                     echo '</TR>';
 				echo '</TABLE>';
 			echo '</TD>';
 		echo '</TR>';
    }
-   
+
    private function aryChoices(&$boards){
         // this result with arrays is created
         // $boards = array(
@@ -223,7 +248,7 @@ class page {
    private function designColumnEdges(&$counter, &$posVals, &$checkAry, $brd){   // pass counter by reference to allow memory location modification instead of just a copy
        // list of alphabets to use
        $alphaNum = array(
-           A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AA,AB
+           'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB'
            );
        $column = 7;             // # of columns in board
        $leftVal = $posVals[0];  // left val starter
@@ -236,6 +261,7 @@ class page {
             $leftVal += 40;                         // increment left value
         }
    }
+
    private function designRowEdges(&$posVals, &$checkAry, $brd){
        $row = 6;                // # of rows in board
        $topVal = $posVals[1];   // top val starter
@@ -248,13 +274,155 @@ class page {
             $topVal += 40;                          // increment top value
         }
    }
-   public function displayGameBrds($objColor = 0, $currPos = 0, $object = 0, $boardNo = 0, $choice = 0){
+   
+   public function startPlayer(){
+       // create player objects and store in master array
+       $playerClr = array(0, 1, 2, 3);
+       $noPlyr = $this->noPlayers;
+       for($i = 0; $i < $noPlyr; $i++){                     // loop to no of player for game
+           shuffle($playerClr);                             // shuffle the array for randomness
+           $randPick = array_pop($playerClr);               // pop last element from array
+           $plyrChoice = unserialize($this->choiceObj[4]);  // unserialize from string to player object
+           $plyrChoice->createPlayer($randPick, $noPlyr);
+           $this->masterObjAry['player'][] = $plyrChoice;    // store in master object array
+       }
+   }
+   public function showPMenu($polyp = -1, $lar1 = -1, $lar2 = -1){
+       // show player's stats and collections or set them up
+       $choices = array('w','y','o','p','g');
+       try{
+           if($this->gTurn >= $this->noPlayers ||
+           ($polyp == -1 && $lar1 == -1 && $lar2 == -1)){throw new Exception('done');}
+           
+           if($this->gTurn >= 0){
+               $plyr = &$this->masterObjAry['player'][$this->gTurn];    // current player object, mem location to retain changes
+               $plyr->gameChoices(6, $choices[$polyp]);                 // polyp object added
+               $plyr->gameChoices(3, $choices[$lar1]);                  // larva object added
+               $plyr->gameChoices(3, $choices[$lar2]);                  // larva object added
+               unset($plyr);                                            // prevent retention
+           }
+               
+           $this->gTurn += 1;
+           
+           if($this->gTurn >= $this->noPlayers){throw new Exception('done');}   // don't prompt player extra
+           
+           $p2lyr = $this->masterObjAry['player'][$this->gTurn];     // current player object
+           $p2lyr->preDecision();
+           $p2lyr->decision(0);                                      // prompt for player
+           $p2lyr->postDecision();
+       }catch (Exception $e ) {
+           // just display players stuff
+           $this->masterObjAry['player'][0]->preDecision();         // open
+           for($i = 0; $i < $this->noPlayers; $i++){
+               $plyr = $this->masterObjAry['player'][$i];           // current player object
+               $plyr->decision(1);                                  // player stuff to display
+           }
+           $this->masterObjAry['player'][0]->postDecision();        // close
+       }
+   }
+   public function showBehindYourScreen(){
+        if ($this->gTurn > 0){
+            $turn = $this->gRound % $this->noPlayers;               // signify each player's turn
+           
+            $plyr = $this->masterObjAry['player'][$turn];           // set
+            $plyr->preScreen();                                     // open
+            $plyr->screen();                                        // display behind screen
+            $plyr->postScreen();                                    // close
+            $plyr->prePFish();                                      // open
+            $plyr->parrotFish();                                    // display behind screen
+            $plyr->postPFish();                                     // close
+        }
+        echo '<h3>GAME TURN: '.($this->gRound + 1).'</h3>';         // display game round
+   }
+   
+   public function startAction(){
+       $act = unserialize($this->choiceObj[5]);                     // unserialize action object
+       $current = $this->gRound % $this->noPlayers;                 // modulo noPlayers to keep track
+       $plyr = $this->masterObjAry['player'][$current];
+       $act->setPlayer($plyr);                                      // player set
+       $this->masterObjAry['action'][$current] = $act;              // store in master  
+   }
+   public function showAction($done){
+       $act = $this->masterObjAry['action'][0];                     // get
+       $act->validateAct($done);                                    // validate actions possible
+       $act->preAlist();                                            // before display
+       $act->Alist();                                               // display
+       $act->postAlist();                                           // after display
+   }
+   
+   public function startDominance(){
+       // create 2 of five coral colors, and 1 of alga colors
+       for($i = 0; $i < 10; $i++){
+           $domT = unserialize($this->choiceObj[2]);                            // unserialize from string to object your dominance object
+           $domT->createDominance();
+           $this->masterObjAry['dominance'][] = $domT;                          // store in master object array 
+       }
+   }
+   public function showDominance(){
+       // display 2 of five coral colors, and 1 of alga colors
+       $this->masterObjAry['dominance'][0]->preDominance();
+       for($i = 0; $i < 10; $i++){
+           $this->masterObjAry['dominance'][$i]->displayDominance();                               // display object in master object array 
+       }
+       $this->masterObjAry['dominance'][0]->postDominance();
+   }
+   
+   public function startOpensea(){
+       // create 1 of five larva colors, and 1-3 of polyp colors
+       $rndStartPos = mt_rand(0, 4);                                // random pos to place sizes of polyp
+       for($i = 0; $i < 5; $i++){
+           $oSbrd = unserialize($this->choiceObj[3]);               // unserialize from string to object openSea object
+           $oSbrd->createOpensea($rndStartPos);
+           $this->masterObjAry['openSea'][] = $oSbrd;               // store in master object array
+           $rndStartPos = ($rndStartPos + 1) % 5;                   // update board # to be created
+       }
+   }
+   public function showOpensea(){
+       // display 1 of five larva colors, and 1-3 of polyp colors
+       $this->masterObjAry['openSea'][0]->preOpensea();
+       for($i = 0; $i < 5; $i++){
+           $this->masterObjAry['openSea'][$i]->displayOpensea();    // display object in master object array 
+       }
+       $this->masterObjAry['openSea'][0]->postOpensea();
+   }
+   
+   public function displayGameBrds($choice = 0, $objColor = 0, $currPos = 0, $object = 0, $boardNo = 0){
        // displays game boards with all the objects placed on them. If needed can instantiate object array in class
-       // need, current div counter, current object color placed, current position placed
-       $action2Display = array('default', 'predetermined', 'action4');      // and so on...
-       $this->defaultBrd($action2Display[$choice]);                                                 // choice of actions for displaying stuff
+       $action2Display = array('default', 'predetermined');          // and so on...
+       
+       $this->defaultBrd($action2Display[$choice]);                             // choice of actions for displaying stuff
        $this->predetermined($action2Display[$choice], $objColor, $currPos);
    }
+   public function performActions($choice = 0, $objColor = 0, $currPos = 0, $object = 0, $boardNo = 0){
+    //   $actions = array($this->defaultBrd($choice), $this->action1(), $this->action2(), 
+    //   $this->action3(), $this->action4(), $this->action5(), $this->action6(), $this->action7(), 
+    //   $this->action8(), $this->action9(), $this->action10());                    // all actions available
+       if($choice >= 10){
+            $this->action10();
+       }
+   }
+   
+   private function action10(){
+    //   $options = array('R', 'Y', 'P', 'G');
+    //   if(in_array($objColor, $options, true)){                                             // create polyp object
+    //         $shrimp = unserialize($this->choiceObj[1]);                                      // unserialize from string to object your choice
+    //         $shrimp->setBoard($this->boardNo[$divC2]);                                       // set the object's current board on residence
+    //         $shrimp->setColor($objColor);                                                    // set the object's color
+    //         $shrimp->setID();                                                                // set the object's ID
+    //         $shrimp->location($currPos);                                                     // set object's location
+    //         $this->masterObjAry['shrimp'][] = $coral;                                        // copy of polyp object stored in masterAry
+    //         $pos = count($this->masterObjAry['polyp']) - 1;
+    //         $this->boardNo[$divC2][$currPos][] = &$this->masterObjAry['polyp'][$pos];       // get memory location of polyp object to gameboard location
+    //         throw new Exception('done');
+    //     }
+    //   $turn = $this->gRound % $this->noPlayers;
+    //   $clr = $this->masterObjAry['player'][$turn]->myColor;
+    //   for($i = 0; $i < $this->noPlayers; $i++){
+    //       $this->boardContent($i, $clr, 0, true);
+    //   }
+    $this->gRound += 1;
+   }
+   
    private function defaultBrd($action){
        try {
            if($action != 'default'){throw new Exception('wrong choice');}
@@ -274,6 +442,16 @@ class page {
            $e->getMessage();
        }
    }
+   private function updateMaster(){                                             // update all positions in masterAry based on changes to objects in gameBoard
+       $names = array('polyp', 'shrimp');                                       // names of objects in Master
+       for($i = 0; $i < count($names); $i++){
+           for($j = 0; $j < count($this->masterObjAry[$names[$i]]); $j++){      // if any object in master of name shrimp and polyp set to null, unset it from array
+               if($this->masterObjAry[$names[$i]][$j] == null){
+                   unset($this->masterObjAry[$names[$i]][$j]);
+               }
+           }
+       }
+   }
    private function predetermined($action, $objColor = 0, $currPos = 0){
        try {
            if($action != 'predetermined'){throw new Exception('wrong choice');}
@@ -282,18 +460,26 @@ class page {
            $choose = 0;
            $divCounter = 0;
            $options = array('w','y','o','p','g');
-           if(in_array($objColor, $options, true)){                                      // create polyp object
-                $this->posCounter += 1;                             // increment pos counter
-                $choose = $this->posCounter % 5;                    // set position of img to display
-                $divCounter = floor($this->posCounter/5);           // set current board to display in
-                $divC2 = floor(($this->posCounter - 1)/5);          // set current board to display in
-                $coral = unserialize($this->choiceObj[0]);          // unserialize from string to object your choice
-                $coral->setBoard($this->boardNo[$divC2]);           // set the object's current board on residence
-                $coral->setColor($objColor);                        // set the object's color
-                $coral->setID($this->posCounter + 16);              // set the object's ID
-                $coral->location($currPos);                         // set object's location
-                $coralID = $coral->getID();                         // get coral ID
-                $this->masterObjAry[$coralID] = serialize($coral);  // store coral string in master array based on ID
+           if(in_array($objColor, $options, true)){                                             // create polyp object
+                $this->posCounter += 1;                                                         // increment pos counter
+                $choose = $this->posCounter % 5;                                                // set position of img to display
+                $divCounter = floor($this->posCounter/5);                                       // set current board to display in
+                $divC2 = floor(($this->posCounter - 1)/5);                                      // set current board to display in
+                $coral = unserialize($this->choiceObj[0]);                                      // unserialize from string to object your choice
+                $coral->setBoard($this->boardNo[$divC2]);                                       // set the object's current board on residence
+                $coral->setColor($objColor);                                                    // set the object's color
+                $coral->setID();                                                                // set the object's ID
+                $coral->location($currPos);                                                     // set object's location
+                $this->masterObjAry['polyp'][] = $coral;                                        // copy of polyp object stored in masterAry
+                $pos = count($this->masterObjAry['polyp']) - 1;
+                $this->boardNo[$divC2][$currPos][] = &$this->masterObjAry['polyp'][$pos];       // get memory location of polyp object to gameboard location
+                if(($this->noPlayers * 5) <= $this->posCounter){
+                    throw new Exception('done');
+                }
+                // if($this->posCounter > 3){
+                //     $this->boardNo[$divC2][$currPos][0] = null;                              // changes all references to Null, doesn't unset from them from boards or masterAry
+                //     unset($this->boardNo[$divC2][$currPos][0]);                              // breaks binding between name and mem location, remove from this board. Doesn't affect other references
+                // }
            }
            
            // first display divs and c and r #, then array contents, 19 indexes for each board
@@ -313,17 +499,13 @@ class page {
            }
        } catch (Exception $e ) {
            // just used to move on
-           $e->getMessage();
+            if($e->getMessage() == 'done'){
+                $decision = 'default';
+                $this->defaultBrd($decision);                                    // default board once all tiles added
+            }
        }
    }
-//   private function setGameObject(&$game, &$object){
-//       $serial = serialize($object);
-//       $game = $serial;
-//   }
-//   private function getGameObject(&$game, &$object){
-//       $unserial = unserialize($game);
-//   }
-    private function boardContent($divCounter, $objColor = 0, $object = 0, $pointer = false){       // display content of board based on div and decide whether pointer to another address in used
+    private function boardContent($divCounter, $objColor = 0, $object = 0, $pointer = false, $link = 0){       // display content of board based on div and decide whether pointer to another address in used
        for ($j = 0; $j < count($this->boardNo[$divCounter]); $j++) {
             $leftChose = 34 + (40 * ($j % 7));                  // so if $j = 1, 2 leftChose = 34, 74. $j = 7, 8 leftChose = 34, 74 etc
             $topChose = 29 + (40 * (floor($j/7)));              // so if $j = 1, 2 topChose = 29, 29. $j = 7, 8 topChose = 69, 69
@@ -335,18 +517,17 @@ class page {
             }
             // display content of board arrays
             for($k = 0; $k < count($this->boardNo[$divCounter][$j]); $k++){
-                $result = $this->boardNo[$divCounter][$j][$k];       // id of object to retrieve
-                $result = unserialize($this->masterObjAry[$result]);
+                $result = $this->boardNo[$divCounter][$j][$k];       // object to retrieve
                 $val = $this->styleAry[0].$leftChose.$this->styleAry[1].$topChose.$this->styleAry[2].'0'.$this->styleAry[3].'0'.$this->styleAry[4].'502'.$this->styleAry[7]
-                .$result->myImg.$this->styleAry[8].kEOL;
+                .$result->getImage().$this->styleAry[8].kEOL;
                 echo $val;
             }
-            if($pointer == true){                                   // if option to prompt select is activated
+            if($pointer == true){                                       // if option to prompt select is activated
                 // first to add with tile, we need: pos
                 $objChoice = unserialize($this->choiceObj[$object]);    // unserialize object from string state
                 $objChoice->setBoard($this->boardNo[$divCounter]);      // set the object's current board on residence
                 $objChoice->setColor($objColor);                        // set the object's color
-                if($objChoice->isValidLoc($j)){                         // if position is valid
+                if($objChoice->isValidLoc($j)){                         // if position is valid (devour, or no same color corals with shrimps)
                     echo $this->styleAry[0].$leftChose2.$this->styleAry[1].$topChose2.$this->styleAry[2].'0'.$this->styleAry[3].'0'.$this->styleAry[4].'501'.$this->styleAry[7]
                     .$this->styleAry[9].$this->links[0].'location='.$j.'&boardNo='.$divCounter.'&objColor='.$objColor.'&object='.$object.$this->styleAry[7].'[+]'.$this->styleAry[10]
                     .$this->styleAry[8].kEOL;

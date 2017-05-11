@@ -1,5 +1,6 @@
 <?php
 session_start();    // start game session
+session_unset();    // clear all previous sessions
 
 // start page for RE game
 require_once 'page.php';    // import game class

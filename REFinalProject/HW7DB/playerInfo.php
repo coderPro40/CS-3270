@@ -1,5 +1,5 @@
 <?php
-	// This function displays player 1's name,consumed polypTiles,shrimp eaten, and initial larvaCubes.
+	// This function displays player 1's initial larvaCubes.
 	
 	function player1(){
 		if (isset($_SESSION["player1"]))
@@ -32,8 +32,45 @@
 		}
 		$_SESSION["player1"] = $player1;
 	}
+	// displays player 1's eaten shrimp
+	function player1SE()
+	{
+		if (isset($_SESSION['eat']))
+			$eat = $_SESSION['eat'];
+		else
+			$eat = array ();
+		
+		if (isset($_SESSION['SE']))
+			$SE = $_SESSION['SE'];
+		else
+		{
+			$sARAY = array (0=>'','');
+			$SE = array (0=>$sARAY);
+		}
+		$pick = filter_input(INPUT_GET, 'pick');
+		$pick1 = filter_input(INPUT_GET, 'pick1');
+		if ($pick !='')
+			$sAry = $_SESSION['sb0'];
+		elseif ($pick1 !='')
+			$sAry = $_SESSION['sb3'];
+		else
+			$sAry = array (0=>'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
+		
+		if ($pick!='' or $pick1!='')
+			$SE[0][1] = $SE[0][1] + 1;
+		echo $SE[0][1];
+	$_SESSION['SE'] = $SE;
+	}
+	function player2SE()
+	{
+		
+	}
+	function player2Consumed($type,$consumed)
+	{
+		
+	}
 	
-	// This function displays player 2's name,consumed polypTiles,shrimp eaten, and initial larvaCubes.
+	// This function displays player 2's initial larvaCubes.
 	
 	function player2(){
 		if (isset($_SESSION["player2"]))

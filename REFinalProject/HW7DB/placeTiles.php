@@ -28,11 +28,21 @@
 			$type = $_SESSION['type'];
 		}
 		
-		$b0 = array(1=>3,4,5,8,9,10,11,12,14,15,17,18,19,20,21,22,23,24,25,27,28,29,30,32,33,34,35,36,37,38,39,40,41);
+		$bHolder = array(
+			array(1=>3,4,5,8,9,10,11,12,14,15,17,18,19,20,21,22,23,24,25,27,28,29,30,32,33,34,35,36,37,38,39,40,41),
+			array(0=>1,2,3,4,5,7,8,9,10,12,13,14,15,17,18,19,20,21,22,23,24,25,26,27,29,30,31,32,33,36,37,39,40)
+			);
 		
+		$choice = ($_SESSION['bFirst'][2] == 'x')? 0: 1;		// check array to determine board to releases
+		$b0 = $bHolder[$choice];
 		foreach ($b0 as $el) 
 		{   // where player chooses position of Tiles
-			echo "<span style='left:" . leftT($el) . "; top:" . topT($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num=".$num."&type=".$type."&T=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			if($choice == 0){
+				echo "<span style='left:" . leftT($el) . "; top:" . topT($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num=".$num."&type=".$type."&T=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			}
+			else {
+				echo "<span style='left:" . leftT1($el) . "; top:" . topT1($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num=".$num."&type=".$type."&T=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			}
 		}
 		
 		$_SESSION['num'] = $num;
@@ -100,11 +110,21 @@
 			$type = $_SESSION['type'];
 		}
 		
-		$b0 = array(0=>1,2,3,4,5,7,8,9,10,12,13,14,15,17,18,19,20,21,22,23,24,25,26,27,29,30,31,32,33,36,37,39,40);
+		$bHolder = array(
+			array(1=>3,4,5,8,9,10,11,12,14,15,17,18,19,20,21,22,23,24,25,27,28,29,30,32,33,34,35,36,37,38,39,40,41),
+			array(0=>1,2,3,4,5,7,8,9,10,12,13,14,15,17,18,19,20,21,22,23,24,25,26,27,29,30,31,32,33,36,37,39,40)
+			);
 		
+		$choice = ($_SESSION['bSecond'][2] == 'x')? 0: 1;		// check array to determine board to releases
+		$b0 = $bHolder[$choice];
 		foreach ($b0 as $el) 
 		{   // where player chooses position of Tiles
-			echo "<span style='left:" . leftT1($el) . "; top:" . topT1($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num1=".$num."&type=".$type."&T1=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			if($choice == 0){
+				echo "<span style='left:" . leftT($el) . "; top:" . topT($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num1=".$num."&type=".$type."&T1=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			}
+			else {
+				echo "<span style='left:" . leftT1($el) . "; top:" . topT1($el) . "; width:0px; height: 0px; position:absolute; z-index:500;'> <a href='hw7db.php?act=placeTile&b0=0&num1=".$num."&type=".$type."&T1=". $el ."&r=1'>[+]</a></span>" . kEOL;
+			}
 		}
 		$_SESSION['num1'] = $num;
 		$_SESSION['type'] = $type;
@@ -158,7 +178,7 @@
                 createLG($redo);
 			}
             else
-                $rf0= array(0=>'x','x','x','','','','x','x','','','y','','','x','','','x','','w','','','','g','','_','','x','','','','p','x','o','','','','','','','','','');
+                $rf0= $_SESSION['first'];
         }
         
 		elseif(isset($_SESSION["rf0"])){
@@ -168,7 +188,7 @@
             writeArrayPosLeftT($loc);
         }
         else{
-            $rf0 = array(0=>'x','x','x','','','','x','x','','','y','','','x','','','x','','w','','','','g','','_','','x','','','','p','x','o','','','','','','','','','');
+            $rf0 = $_SESSION['first'];
             include_once 'gameLog.php';         // include gamelog file
             createLG();                         // write string for start game to game log
         }
@@ -204,7 +224,7 @@
                 createLG($redo);
 			}
             else
-				$rf3 = array(0=>'x','','','','','','x','','','','o','x','','','','','x','','g','','','','w','','_','','','','x','','p','','y','','x','x','','','x','','','x');
+				$rf3 = $_SESSION['second'];
         }
         elseif(isset($_SESSION["rf3"])){
             $rf3 = $_SESSION["rf3"];
@@ -213,7 +233,7 @@
             writeArrayPosRightT($loc);
         }
         else{
-            $rf3 = array(0=>'x','','','','','','x','','','','o','x','','','','','x','','g','','','','w','','_','','','','x','','p','','y','','x','x','','','x','','','x');
+            $rf3 = $_SESSION['second'];
             include_once 'gameLog.php';         // include gamelog file
             createLG();                         // write string for start game to game log
         }

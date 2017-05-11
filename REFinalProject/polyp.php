@@ -1,33 +1,44 @@
 <?php
 class polyp{
+    protected $imgs = array();
     protected $colors = array();
-    private $myColor = 0;           // color attribute
+    protected $posCol = 0;          // possible colors
     private $myBoard = 0;           // board attribute
-    private $myLocation = 0;        // location attribute
-    private $polypID = 16;
-    public $myImg = 0;
+    private $polypID = 0;           // initial ID
+    private $myImg = 0;
+    public $myLocation = 0;         // location attribute
+    public $myImage = 0;
+    public $myExt = 'jpg';          // img extension
+    public $myColor = 0;            // color attribute
     public $myName = 'polyp';       // name of the object
     public function __construct(){
         $choices = array('w','y','o','p','g');
+        $this->posCol = $choices;
         for($i = 0; $i < count($choices); $i++){
             $this->colors[$choices[$i]] = '<IMG SRC="game/reef/images/p'.$i.'.jpg" HEIGHT=32 WIDTH=32 ALT="'.$choices[$i].'">';
         }
+        for($i = 0; $i < count($choices); $i++){
+            $this->imgs[$choices[$i]] = 'p'.$i;     // img name
+        }
     }
     public function setBoard(&$board){  // pointer to board's exact location, pass by reference
-        $this->myBoard = &$board;        // update current board contents
+        $this->myBoard = &$board;       // update current board contents with memory address of board array
     }
     public function setColor($color){
         $this->myColor = $color;                // set color of polyp
         $this->myImg = $this->colors[$color];   // set image to be displayed when needed
+        $this->myImage = $this->imgs[$color];   // set part of image string for specific display
     }
-    public function setID($pID){
-        $this->polypID = $pID;
+    public function setID(){
+        static $id = 0;
+        $this->polypID = $id;
+        $id += 1;                       // increment ID
     }
     public function getID(){
         return $this->polypID;
     }
     public function getImage(){
-        return $myImg;                          // get image from object
+        return $this->myImg;                          // get image from object
     }
     public function isValidLoc($location){
         // assuming setBoard has already occurred
@@ -54,7 +65,6 @@ class polyp{
     }
     public function location($pos){
         $this->myLocation = $pos;           // set location of polyp object
-        $this->myBoard[$pos][] = $this->polypID;     // store object in that array location
     }
     private function verifyPos(&$validPos, $locationArray, $location){
         try{
@@ -104,4 +114,3 @@ class polyp{
         
     }
 }
-?>

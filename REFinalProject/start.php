@@ -1,6 +1,7 @@
 <?php
 // start page for RE game
 require_once 'page.php';    // import game class
+session_unset();            // clear session variables
 
 $game = new page();         // closing braces to activate constructor
 $choices = array(0, 2, 5);  // choices
