@@ -1,0 +1,145 @@
+<p><strong>Name: ThankGod Ofurum</strong></p>
+<p><strong>Class: CS3270</strong></p>
+<p><strong><u>HW 5 Report Responses</u></strong></p>
+<ol start="2">
+<li>a.&nbsp;&nbsp;&nbsp;&nbsp;<strong>What are the names of the identifying player-colors (used in front of the player-names)?</strong>G.gif, P.gif, R.gif, Y.gif</li>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>images</p>
+<ol>
+<li><strong>What are the names of the matching shrimp pieces?</strong></li>
+</ol>
+<p>sG.gif, sP.gif, sR.gif, sY.gif</p>
+<ol>
+<li><strong>In which two (or more) regions of the basic wireframe will these be used?</strong></li>
+</ol>
+<p>They will be used in the player�s stats and in their possessions, also on the game board.</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>game/reef/images</p>
+<ol>
+<li><strong>What are the names of the larva-cube icons?</strong></li>
+</ol>
+<p>l0, l1, l2, l3, l4</p>
+<ol>
+<li><strong>In which two (or more) regions of the basic wireframe will these be used?</strong></li>
+</ol>
+<p>They are shown in the&nbsp;players&nbsp;Initial larva cubes and in the players possessions.</p>
+<p>&nbsp;</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>game/reef/images</p>
+<ol>
+<li><strong>What are the names of the polyp-tile&nbsp;(what I called&nbsp;<em>"coral"</em>)&nbsp;graphic files?</strong></li>
+</ol>
+<p><strong>�</strong><strong>&nbsp;</strong>p0, p1, p2, p3, p4</p>
+<ol>
+<li><strong>In which five (or more) regions of the basic wireframe will these graphics be used?</strong></li>
+</ol>
+<p>In the&nbsp;Cosumed&nbsp;polyp&nbsp;tiles(in the players stats), In the players possessions, inside the parrotfish, in the hierarchy squares, inside the resource squares, and also on the game board.</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>game/reef/images</p>
+<ol>
+<li><strong>How are the twenty&nbsp;<em>Dominance-tile</em>(<u>official name</u>: "coral-tiles",</strong><strong>�</strong><strong>&nbsp;unfortunately!)&nbsp;graphic files implemented?</strong></li>
+</ol>
+<p>They are dynamic and contain the image of each 3 polyp tiles inside them. They switch when told to do so.</p>
+<ol>
+<li><strong>What graphics resources are used?</strong></li>
+</ol>
+<p>They used 4 images per dominance tile.</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>game/reef/images</p>
+<ol>
+<li><strong>What are the names of the "alga cylinder" graphics?</strong></li>
+</ol>
+<p>cyb,&nbsp;cyg,cyp,cyr</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p><strong>�</strong>game/reef/images</p>
+<ol>
+<li><strong>What are the names of&nbsp;<em><u>all</u><u>four</u></em>&nbsp;reef images?</strong></li>
+</ol>
+<p>b0, b1, b2, b3</p>
+<ol>
+<li><strong>Which two are you using in your implementation?</strong></li>
+</ol>
+<p>b0, b3</p>
+<ol>
+<li><strong>Where are these located in your image directory file-structure?</strong></li>
+</ol>
+<p>game/reef/images</p>
+<p><strong>&nbsp;</strong></p>
+<ol>
+<li><strong>Does this directory file-structure for your images make sense to you?</strong><strong>�</strong><strong>How would you prefer to structure your image resources?</strong></li>
+</ol>
+<p>I would put all the images into one image folder, also not have so many subfolders within a folder, just one folder that contains them all.</p>
+<ol>
+<li><strong>Would you change that file-structure if it were up to you?</strong><strong>�</strong><strong>&nbsp;Explain. This would be the time to do it --&nbsp;it&nbsp;will only get harder the further you get into the process.</strong><strong>�</strong><strong>&nbsp;This is one of the many reasons there is a Design Phase before the Implementation Phase.</strong></li>
+</ol>
+<p><strong>Note, however, that if you&nbsp;<em>do</em>&nbsp;decide to change the file structure, you will no longer be able to pattern your PHP code after the HTML code delivered to you by the SBW server.</strong><strong>�</strong><strong>&nbsp;It would definitely be easier to leave it as it currently is, no matter how personally aesthetically displeasing.</strong></p>
+<p><strong>�����������</strong><strong>&nbsp;</strong>I would like to do it if it wasn�t hardcoded already, if I implemented this game originally that is what I would�ve done. Due to the fact it is already done this way I will leave it be.</p>
+<p>&nbsp;</p>
+<ol>
+<li><strong>Provide your final design-decision regarding the graphics files directory structure, and your rationale.</strong></li>
+<li><strong>a.</strong><strong>How many of each color of the following resources does the game have?</strong></li>
+<li><strong>Larva cubes&nbsp;</strong>- 50</li>
+<li><strong>Polyp tiles&nbsp;</strong>- 200</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>iii.</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Shrimp pieces&nbsp;</strong>- 16</p>
+<ol>
+<li><strong>Officially-named "Coral tiles"&nbsp;</strong>&ndash; 10</li>
+<li><strong>a.</strong><strong>Given the naming-structure of the various colors of the polyp tiles and larva cubes, what kind of data structure does this suggest to you in order to most-conveniently manage these resources when PHP is printing out the code representing them?</strong></li>
+</ol>
+<p>Since they are labeled 0,1,2,3,4 essentially it would be easy to put them into an array where possible to keep trach of them easily.</p>
+<ol>
+<li><strong>Does this suggest any functions we might eventually want to implement?</strong><strong>�</strong><strong>&nbsp;What might their names (and functionality) be?</strong></li>
+</ol>
+<p>Eventually we will have to store these larva cubes and polyp tiles in many places. Including the player�s stats as well as possessions, the game board and so on. Using arrays would be an efficient way to do so, since the images values correspond to a location within the array essentially.</p>
+<ol>
+<li><strong>How might you plan to represent a player's current hand of 10 polyp tiles (3W 1Y 2O 2P 2G), for example?</strong></li>
+</ol>
+<p>Well if put into an array simply put 3 in the 0 slot and 1 in the 1 slot and 2 in the 2 slot and so on. Since the tiles are numbered in that fashion you can have the numbers in that array to display how many of each the player has.</p>
+<ol>
+<li><strong>How might you plan to represent a player's current hand of 6&nbsp;<em>consumed polyp tiles</em>(1W 3P 2G)?</strong></li>
+</ol>
+<p>Essentially I would represent it the same way as the poly tiles in hand, as they are consumed they will be place in their corresponding slot in the array.</p>
+<ol>
+<li><strong>How might you plan to represent a player's current hand of 4 Larva Cubes (1Y 1O 2G)?</strong></li>
+</ol>
+<p>I believe an array will work here also with the above explanations.</p>
+<ol>
+<li><strong>How might you represent the game's initial supply of 200 polyp tiles, from which each player received a random subset at the beginning of the game?</strong></li>
+</ol>
+<p>I would assume that there are 40 of each polyp tile at the beginning of the game, I would have an array that holds the value 40 in each corresponding slot, pop a given value from each slot at random until the player is given that amount of polyp tiles.</p>
+<ol>
+<li><strong>Provide a detailed pseudocode (or a PHP function implementation) of this initial supply being initialized, and then six of these being assigned to the first player (in a 2-player game)</strong></li>
+</ol>
+<p>For&nbsp;i&nbsp;in&nbsp;recourceArray:</p>
+<p>�����������&nbsp;resourceArray.takeOutRandom(i)</p>
+<p>�����������&nbsp;until&nbsp;playerArray.vals(i) = 6</p>
+<ol start="5">
+<li><strong>Locate the code implementing the initial board-state (two reefs each containing one of each color of polyp-tile in hard-coded locations).</strong></li>
+<li><strong>How many lines of code does this require in your HTML source file?</strong></li>
+</ol>
+<p>It requires 45 lines of code.</p>
+<ol>
+<li><strong>Explain how the letters and numbers are placed that index each location on the reefs</strong></li>
+</ol>
+<p>They are placed in span tags with defined locations such as left, top, width, height, z-index.</p>
+<ol>
+<li><strong>How would you initialize the data structure that provides this initial state of the game?</strong></li>
+</ol>
+<p>To place objects on the game board I would create a 2-D array over each game board, much like the table we created in lab a few weeks back, and have every slot have a given name that can be accessed.</p>
+<ol>
+<li><strong>How would you process this data structure in order to generate the code that correctly displays this initial state?</strong><strong>�</strong><strong>Provide a detailed pseudocode (or PHP function implementation) of this process.</strong></li>
+</ol>
+<p>Create a 2-D array with given values such as A-2.</p>
+<p>Place one of each polyp-tile on each game board in a random location.</p>
+<p>Echo out the image in the given location.</p>

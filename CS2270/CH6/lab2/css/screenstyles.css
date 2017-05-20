@@ -1,0 +1,175 @@
+/* Style sheet created by: ThankGod Ofurum 10/5/2016 */
+
+/* Style for body specifies a background color */
+body {
+	background-color: #E0F0FF;
+}
+
+/* Style to help create flexible images */
+img{
+	max-width: 100%;
+}
+
+/* Styles for Mobile Layout */
+
+/* Style for the container centers the page and specifies the width */
+#container {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Style for the header specifies top margin, background color, rounded corners, and center align content */
+header {
+	font-family: Verdana, Arial, serif;
+	font-size: 2em;
+	margin-top: 0.2em;
+	margin-bottom: 0.3em;
+	text-align: center;
+	padding: 0.2em;
+	color: #000066;
+}
+
+#banner {
+	text-align: center;
+}
+
+/* Style for nav specifies text properties */
+nav {
+	font-family: Lucida, "Times New Roman", serif;
+	font-size: 1em;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* Style specifies padding and margins for unordered list */
+nav ul{
+	padding: 0;
+	margin-top: .5em;
+	margin-bottom: .5em;
+}
+
+/* Style for nav li specifies the background color, rounded corners, removes bullet style, and applies margins
+and padding for list items within the navigation */
+nav li{
+	background-color: #000066;
+	list-style-type: none;
+	margin: .4em;
+	padding: .5em;
+}
+
+/* Style changes navigation link text color to white and removes the underline */
+nav li a{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+/* Style for the main specifies a block display, text properties, margins, padding, rounded corners, and borders  */
+main {
+	display: block;
+	font-family: Georgia, "Times New Roman", sans-serif;
+	font-size: 1em;
+	margin-top: 0.5em;
+	padding: 0.5em;
+	border-radius: 1em;
+	background-color: #FFFFFF;
+}
+
+/* Style for the footer specifies font size, text alignment, and top margin */
+footer {
+	font-size: .70em;
+	text-align: center;
+	margin-top: 2em;
+}
+
+/* Style displays the mobile class */
+.mobile{
+	display: inline;
+}
+
+/* hide desktop display */
+.desktop{
+	display: none;
+}
+
+@media only screen and (min-width: 481px){
+	img{
+		width: 80%;
+	}
+
+	nav li{
+		display: inline;
+		float: left;
+		margin-left: 1%;
+		margin-right: 1%;
+		padding-left: 0;
+		padding-right: 0;
+		width: 18%;
+	}
+
+	main{
+		clear: left;
+	}
+
+	.mobile{
+		display: none;
+	}
+
+	.desktop{
+		display: inline;
+	}
+}
+
+@media only screen and (min-width: 769px){
+	body{
+		background: linear-gradient(white, #3366CC);
+		background: -moz-linear-gradient(white, #3366CC);
+		background: -o-linear-gradient(white, #3366CC);
+		background: -webkit-linear-gradient(white, #3366CC);
+	}
+	#container{
+		width: 80%;
+
+	}
+
+	img{
+		width: 60%;
+	}
+
+	nav ul{
+		margin: 0;
+		padding-left: .5%;
+		padding-right: .5%;
+	}
+
+	nav li{
+		border-radius: 0;
+		margin-left: 0;
+		margin-right: 0;
+		padding: 0;
+		width: 20%;
+		white-space: nowrap;
+	}
+
+	nav li a{
+		display: inline-block;
+		padding: .7em;
+		font-size: 1.25em;
+	}
+
+	main{
+		border: none;
+		border-radius: 1em;
+		box-shadow: 1em 1em 1em #331400;
+		margin-top: 1em;
+	}
+
+	nav li a:link{
+		color: white;
+	}
+
+	nav li a:hover{
+		color: #CCFFCC;
+		font-size: 1.5em;
+	}
+}
