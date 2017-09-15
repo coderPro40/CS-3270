@@ -1,0 +1,33 @@
+/*	ThankGod
+	9/19/2016*/
+
+body{color: #000000;						/*color of section*/
+	background-color: #B8D1EB;				/*background color*/
+	font-family: "Times New Roman", serif;	/*font type*/
+}
+
+#outerwrapper{width: 70%;					/*constrain outerwrapper to 70% of width of screen*/
+	margin: 0 auto 0 auto;					/*center content with the outerwrapper*/
+}
+
+footer{font-size: 0.75em;					/*reduce font size to .75em*/
+	text-align: center;						/*align text center of section*/
+}
+
+#main{background-color: #C5A98B;			/*light-brown background color*/
+	padding: 10px;							/*10px padding on top*/
+}
+
+.floatleft{float: left;						/*float certain picture to the left*/
+	margin-right: 3%
+}
+
+ul{list-style-type: none;
+}
+
+#main, footer{clear: both;
+}
+
+.floatright{float: right;					/*float certain picture to the right*/
+	margin-left: 3%
+}

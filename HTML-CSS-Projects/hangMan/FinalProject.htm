@@ -1,0 +1,273 @@
+<!DOCTYPE html>			<!--declare that webpage is of type html5-->
+
+<html lang="en">
+<!--Head of code-->
+<head>
+<link rel="stylesheet" href="CSS/finalProjectCSS.css">
+<title>Javascript Final Project</title>
+<script src="chance.js"></script>
+<!--JavaScript code-->
+<script type="text/javascript">
+// console.log("cliks is now", cliks);
+// console.log("needVal is now", needVal);
+// console.log("array is now", array);
+// first code that's run from body main
+function getVar(){
+	var tmp = window.location.href; // Get page address
+	var pos = tmp.indexOf("?");				// Are there vars?
+	
+	if (pos == -1){
+		var temp = chance.state({territories: true, full: true}).toLowerCase();	// set state value
+		var counter = 0;
+		localStorage.setItem("temp", temp);										// store chosen value as constant
+		localStorage.setItem("count", counter);									// store first value
+		running();																// for first run
+	}
+	else{
+		tmp = tmp.substring(pos+1);			// retrieve part with only values
+		var cliks = retrieval(tmp);			// get cliks value
+		pos = tmp.indexOf("&");				// position on next retrival value
+		tmp = tmp.substring(pos+1);	
+		var needVal = "" + retrieval(tmp);	// get state value
+		pos = tmp.indexOf("&");				// position on next retrival value
+		tmp = tmp.substring(pos+1);
+		pos = tmp.indexOf("=");
+		var array = tmp.substring(pos+1);
+		cliks = parseInt(localStorage.getItem("count"));
+		console.log(cliks);
+		updateRun(cliks, needVal, array);
+	}
+}
+</script>
+
+<script type="text/javascript">
+function retrieval(tmp){
+	var pos = tmp.indexOf("=");     	// position after var name
+	var val = 0;
+	var pos2 = tmp.indexOf("&");    	// for getting var value
+	val = tmp.substring(pos+1, pos2);
+	return val;
+}
+
+// following function
+function updateRun(cliks, needVal, curr){
+	// all possible alphabets for user to choose from
+	var alphabets = [];
+	alphabets = localStorage.getItem("alpha"); 
+	alphabets = alphabets.replace(needVal, "*");			// remove from alphabets
+	console.log(needVal);
+	console.log(typeof alphabets);
+	console.log("curr ", curr); 
+	console.log(alphabets);
+	var finished = checkDone(cliks, curr);					// validate to see if done
+	if (finished === "win"){
+		document.write("You win");							// for winning
+	}
+	else if (finished === "lose"){
+		document.write("You lose");							// for losing
+	}
+	else{
+		curr = curr.split(",");							// create array from string
+		alphabets = alphabets.split(",");
+		var createBtnDiv = document.createElement("DIV");		// div for all buttons
+		var createTxtDiv = document.createElement("P");			// div for top text
+		var mainDiv = document.createElement("DIV");			// div for all element of text and button
+		var image = document.createElement("IMG");				// create image for body
+		var imageTwo = document.createElement("IMG");			// create image for hangman picture
+		var size = 0;
+		var key = localStorage.getItem("temp");
+		image.src = "HIMG/Image.jpg";
+		imageTwo.src = "HIMG/hangman" + cliks + ".jpg";
+		createTxtDiv.className = "app";
+		createTxtDiv.innerHTML = "Below is where you choose the value you think is in the text, <br>" +
+		"and remember that you have 14 tries at getting the word correct."; 
+		createBtnDiv.className = "divide";
+		mainDiv.className = "divide2";
+		image.className = "imgOne";
+		imageTwo.className = "imgTwo";
+
+		// remove if already provided
+		for(var i = 0; i < alphabets.length; i++){
+			if(alphabets[i] !== "*"){
+				var btn = document.createElement("BUTTON");	// for individual buttons
+				btn.innerHTML = alphabets[i];				// append text to btn
+				btn.id = "btn" + size;						// for calling buttons
+				size += 1;
+				createBtnDiv.appendChild(btn);
+			}
+		}
+		mainDiv.appendChild(createTxtDiv); mainDiv.appendChild(createBtnDiv);
+		localStorage.setItem("alpha", alphabets);
+		document.getElementById("Body").appendChild(image);			// to body element
+		document.getElementById("Body").appendChild(imageTwo);		// to body element
+		document.getElementById("Main").appendChild(mainDiv);
+		console.log("key and size", key, size);
+		updateBoxes(size, key, curr);
+	}
+}
+
+function checkDone(cliks, alphabets){
+	var finished = "none";
+	if (cliks === 15){
+		finished = "lose";
+	}
+	if (alphabets.indexOf("_") === -1){
+		finished = "win";
+	}
+	return finished;
+}
+
+// code that's not run from body main
+function running(){
+	// all possible alphabets for user to choose from
+	var alphabets= ["a", "b", "c", "d", "e", "f", "g",
+	"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s"
+	, "t", "u", "v", "w", "x", "y", "z"];
+	var createBtnDiv = document.createElement("DIV");		// div for all buttons
+	var createTxtDiv = document.createElement("P");			// div for top text
+	var mainDiv = document.createElement("DIV");			// div for all element of text and button
+	var image = document.createElement("IMG");				// create image for body
+	var imageTwo = document.createElement("IMG");			// create image for hangman picture
+	image.src = "HIMG/Image.jpg";
+	imageTwo.src = "HIMG/hangman0.jpg";
+	image.className = "imgOne";
+	imageTwo.className = "imgTwo";
+	createTxtDiv.className = "app";
+	createTxtDiv.innerHTML = "Below is where you choose the value you think is in the text, <br>" +
+	"and remember that you have 14 tries at getting the word correct."; 
+	createBtnDiv.className = "divide";
+	mainDiv.className = "divide2";
+	for(var i = 0; i < alphabets.length; i++){
+		var btn = document.createElement("BUTTON");			// for individual buttons
+		btn.innerHTML = alphabets[i];						// append text to btn
+		btn.id = "btn" + i;									// for calling buttons
+		createBtnDiv.appendChild(btn);
+	}
+	mainDiv.appendChild(createTxtDiv); mainDiv.appendChild(createBtnDiv);
+	
+	// store mainDiv and alphabet size as constants
+	// localStorage.setItem("divide2", JSON.stringify(mainDiv));
+	localStorage.setItem("alpha", alphabets);
+	document.getElementById("Body").appendChild(image);			// to body element
+	document.getElementById("Body").appendChild(imageTwo);		// to body element
+	document.getElementById("Main").appendChild(mainDiv);
+	console.log(mainDiv);
+	createTurn(alphabets.length, alphabets);
+}
+
+// fourth function
+function createTurn(alphaSize, alphabets){
+	var alpha = alphabets.toString();
+	var state = localStorage.getItem("temp");
+	var guess = []; guess.length = state.length;
+	for (var i = 0; i < state.length; i++) {
+		if((alpha.indexOf(state.charAt(i)) === -1) || (state.charAt(i) === ",")){
+			console.log(state.charAt(i));
+			guess[i] = "*";
+		}
+		else{
+			guess[i] = "_";
+		}
+	}
+	updateBoxes(alphaSize, state, guess);			// move on to update the boxes
+}
+
+// fifth function in program
+function updateBoxes(alphaSize, key, curr){
+	// used for appending text to screen
+	var chosen = document.createElement("P");
+	chosen.innerHTML = curr.join(" ");					// convert to string
+	chosen.className = "app2";
+	var pSecond = document.createElement("P");
+	pSecond.innerHTML = "Characters to guess";
+	pSecond.className = "app2";
+	var Dv = document.createElement("DIV");				// for p elements
+	Dv.id = "divide3";
+	Dv.appendChild(chosen); Dv.appendChild(pSecond);
+	document.getElementById("Main").appendChild(Dv);	// to main element
+	console.log(key);
+
+	// for button event listners
+	for (var i = 0; i < alphaSize; i++) {
+		(function(i){									// needed to run each button function without running all at once
+			var h = document.getElementById("btn" + i);
+			console.log(h);
+			h.onclick = function(){
+				turn(h.innerHTML, key, curr);
+			};
+		}) (i);
+	}
+}
+
+// sixth function
+function turn(val, key, curr){
+	// child of div used to display right buttons
+	var pFirst = document.getElementById("divide3").children;
+	// pFirst[1].innerHTML = "Right Here";
+	var correct = true;	// used to decide whether to update counter or not
+	
+	// test to see if chosen letter is correct
+	if (key.indexOf(val) == -1){
+		correct = false;						// counter update
+		console.log(correct);
+		btnClick_onclick(val, curr, correct);	// for wrong choice
+	}
+	else{
+		// used for appending text to screen
+		for(var i = 0; i < key.length; i++){
+			// if position is a valid text
+			if(key.charAt(i) === val){
+				curr[i] = val;
+			}
+		}
+		console.log(correct);
+		pFirst[0].innerHTML = curr.join(" ");	// for right choice
+		btnClick_onclick(val, curr, correct);	// counter remain same
+	}
+}
+
+// seventh funtion
+function btnClick_onclick(val, curr, correct){
+	var cliks = 0;
+	var counter = parseInt(localStorage.getItem("count"));	// get counter
+	var strAddr = window.location.href;  // Get page address
+	var nuAddr = null;
+	console.log("string address ", strAddr);
+	
+	if (!(correct)){
+		counter += 1;
+	}
+	localStorage.setItem("count", counter);	// store counter
+	
+	if (strAddr.indexOf("?") == -1) {
+		cliks = 1;
+		nuAddr = strAddr + "?cliks=1";     // Add "?", no cliks update
+	}
+	else{
+		var pos = strAddr.indexOf("cliks=");  		// get cliks
+		cliks = parseInt(strAddr.substring(pos+6));
+		cliks++;									// increment
+		nuAddr = strAddr.substr(0,pos+6) + cliks;  	// generate new
+	}
+	nuAddr += "&neededVal=" + val + "&currentSearch=" + curr;	// things to pass through address box
+	console.log("new address ", nuAddr);
+	window.location.href = nuAddr;					// GO TO NEW ADDRESS
+}
+
+</script>
+
+</head>
+
+<!--Body of code-->
+<body onload = "getVar()" id = "Body">
+	<!--Use the main area to add the main content of the webpage-->
+	<main id = "Main">
+	</main>
+	<!--
+	<footer style = "text-align: center;">
+		&copy; Copyright 2015. All Rights Reserved.<br>
+	</footer>
+	-->
+</body>
+
+</html>
