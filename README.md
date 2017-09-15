@@ -1,1 +1,2 @@
-This is a list of all the projects completed during my time taking Advanced Web Programming and Intro to Web programming
+#WP02
+This is a list of all the projects completed that involves web programming languages
